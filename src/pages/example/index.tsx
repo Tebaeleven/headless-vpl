@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card";
 import React, { useEffect } from "react";
-import initialize from "./engine/normal-vpl/main";
-import initializeHeadless from "./engine/headless-vpl/main";
+import initialize from "@/engine/normal-vpl/main";
+import initializeHeadless from "@/engine/headless-vpl/main";
 
 function page() {
   useEffect(() => {
