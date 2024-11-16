@@ -1,4 +1,4 @@
-import { drawDebugConnector } from "../utils/debug";
+import { drawDebugConnector } from '@/engine/utils/debug';
 
 export function initialize() {
   const CONNECTOR_DISTANCE = 100;
@@ -24,9 +24,7 @@ export function initialize() {
 
   // 初期状態の設定
   function initializeBlockStates() {
-    const blocks = document.querySelectorAll(
-      ".block"
-    ) as NodeListOf<SVGElement>;
+    const blocks = document.querySelectorAll('.block') as NodeListOf<SVGElement>;
     blocks.forEach((block, key) => {
       let position = { x: 0, y: 0 };
 
@@ -42,10 +40,7 @@ export function initialize() {
   }
 
   // ブロックの位置を更新する関数
-  function updateBlockPosition(
-    blockId: string,
-    position: { x: number; y: number }
-  ) {
+  function updateBlockPosition(blockId: string, position: { x: number; y: number }) {
     const state = blockStates.get(blockId);
     if (state) {
       // 現在の位置と新しい位置の差分を計算
@@ -56,22 +51,19 @@ export function initialize() {
       state.position = position;
       const element = document.querySelector(`#${blockId}`) as SVGElement;
       if (element) {
-        element.setAttribute(
-          "transform",
-          `translate(${position.x},${position.y})`
-        );
+        element.setAttribute('transform', `translate(${position.x},${position.y})`);
       }
 
-      if (blockId === "block2") {
+      if (blockId === 'block2') {
         //svgのtext要素を取得
-        const textElement = element.querySelector("text") as SVGTextElement;
+        const textElement = element.querySelector('text') as SVGTextElement;
         if (textElement) {
           textElement.textContent = `${position.x},${position.y}`;
         }
-        const distance = connectorDistance(blockId, "block1");
+        const distance = connectorDistance(blockId, 'block1');
         textElement.textContent = `${distance}`;
         if (distance) {
-          nearestConnection = { id: "block1", distance: distance };
+          nearestConnection = { id: 'block1', distance: distance };
         }
       }
 
@@ -95,11 +87,11 @@ export function initialize() {
     const target = evt.target as Element;
 
     // input要素やforeignObject要素の場合は、ドラッグを開始しない
-    if (target.tagName === "INPUT" || target.tagName === "foreignObject") {
+    if (target.tagName === 'INPUT' || target.tagName === 'foreignObject') {
       return;
     }
 
-    const blockElement = target.closest(".block") as SVGElement;
+    const blockElement = target.closest('.block') as SVGElement;
     if (blockElement) {
       const blockId = blockElement.id;
       const state = blockStates.get(blockId);
@@ -137,15 +129,15 @@ export function initialize() {
   function endDrag() {
     if (
       selectedBlockState &&
-      selectedBlockState.id === "block2" &&
+      selectedBlockState.id === 'block2' &&
       nearestConnection.distance <= CONNECTOR_DISTANCE
     ) {
       //接続設定
-      connectBlock("block2", nearestConnection.id!);
+      connectBlock('block2', nearestConnection.id!);
     } else {
       //接続解除
-      console.log("接続解除しました");
-      disconnectBlock("block2");
+      console.log('接続解除しました');
+      disconnectBlock('block2');
     }
     selectedBlockState = null;
   }
@@ -201,11 +193,7 @@ export function initialize() {
       };
 
       // デバッグ用の接続線描画
-      drawDebugConnector(
-        sourceConnectorPosition,
-        targetConnectorPosition,
-        100
-      );
+      drawDebugConnector(sourceConnectorPosition, targetConnectorPosition, 100);
 
       return Math.sqrt(
         Math.pow(sourceConnectorPosition.x - targetConnectorPosition.x, 2) +
@@ -215,14 +203,14 @@ export function initialize() {
   }
 
   // 初期化とイベントリスナーの設定
-  const workspace = document.querySelector("#workspace") as SVGSVGElement;
+  const workspace = document.querySelector('#workspace') as SVGSVGElement;
   if (workspace) {
     initializeBlockStates();
-    workspace.addEventListener("mousedown", startDrag);
-    workspace.addEventListener("mousemove", drag);
-    workspace.addEventListener("mouseup", endDrag);
+    workspace.addEventListener('mousedown', startDrag);
+    workspace.addEventListener('mousemove', drag);
+    workspace.addEventListener('mouseup', endDrag);
   } else {
-    console.error("ワークスペースが見つかりません");
+    console.error('ワークスペースが見つかりません');
   }
 }
 
