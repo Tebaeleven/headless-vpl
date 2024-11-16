@@ -1,5 +1,5 @@
-import { Link, redirect, useNavigate } from "@/router";
-import { Button } from "@/components/ui/button";
+import { Link, redirect, useNavigate } from '@/router';
+import { Button } from '@/components/ui/button';
 
 function index() {
   const navigate = useNavigate();
@@ -8,7 +8,7 @@ function index() {
     <div>
       <Button
         onClick={() => {
-          navigate("/example");
+          navigate('/example');
         }}
       >
         Example
