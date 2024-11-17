@@ -1,4 +1,4 @@
-import { drawDebugConnector } from '@/engine/utils/debug';
+import { drawDebugConnector } from '@/engine/utils/debug/svg';
 
 export function initialize() {
   const CONNECTOR_DISTANCE = 100;

@@ -3,7 +3,9 @@ import { Connector } from '../../../engine/headless-vpl/src/connector';
 import { HeadlessVPL } from '../../../engine/headless-vpl/src/manger';
 import { Parent } from '../../../engine/headless-vpl/src/parent';
 import { Rect } from '@/engine/headless-vpl/src/layout/rect';
-import { drawDebugRect } from '@/engine/utils/debug';
+import { drawDebugRect } from '@/engine/utils/debug/svg';
+import { drawRectCanvas } from '@/engine/utils/debug/canvas';
+import anime from 'animejs/lib/anime.es.js';
 
 export const initialize = () => {
   const Manager = new HeadlessVPL();
@@ -33,24 +35,50 @@ export const initialize = () => {
 
   Manager.addBlock(block);
 
-  const autoLayout = new AutoLayout({ width: 300, height: 100, position: { x: 0, y: 100 } });
-  autoLayout.addElement(new Rect({ w: 50, h: 50 }));
-  autoLayout.addElement(new Rect({ w: 100, h: 50 }));
+  const autoLayout = new AutoLayout({ width: 300, height: 100, position: { x: 110, y: 100 } });
+  autoLayout.addElement(new Rect({ w: Math.random() * 200, h: 50 }));
+  autoLayout.addElement(new Rect({ w: Math.random() * 200, h: 50 }));
   autoLayout.addElement(new Rect({ w: 50, h: 50 }));
 
   autoLayout.setLayout();
 
   const workspace_debug = document.querySelector('#workspace2') as SVGSVGElement;
-  drawDebugRect({ rect: autoLayout.getRect(), parent: workspace_debug, color: 'gray' });
-
-  autoLayout.elements.forEach((rect) => {
-    if (workspace_debug) {
-      drawDebugRect({ rect: rect.getRect(), parent: workspace_debug });
-    } else {
-      console.error('ワークスペースが見つかりません');
-    }
+  drawDebugRect({
+    rect: autoLayout.getRect(),
+    parent: workspace_debug,
+    color: 'gray',
+    id: 'autoLayout',
   });
 
+  const workspace_canvas = document.querySelector('#workspace_canvas') as HTMLCanvasElement;
+  const ctx = workspace_canvas.getContext('2d') as CanvasRenderingContext2D;
+
+  if (!ctx) {
+    console.error('Canvasコンテキストが取得できません');
+    return;
+  }
+
+  let frame = 0;
+  function update() {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    //1000msごとにランダムに幅を変更
+    if (frame % 100 === 0) {
+      autoLayout.elements[0].w = Math.random() * 100 + 10;
+      autoLayout.elements[1].w = Math.random() * 100 + 10;
+    }
+
+    autoLayout.setLayout();
+    drawRectCanvas({ rect: autoLayout.getRect(), ctx: ctx, color: 'gray' });
+
+    autoLayout.elements.forEach((rect, index) => {
+      drawRectCanvas({ rect: rect.getRect(), ctx: ctx });
+    });
+
+    frame++;
+    requestAnimationFrame(update);
+  }
+
+  update();
   // 初期化とイベントリスナーの設定
   const workspace = document.querySelector('#workspace2') as SVGSVGElement;
   if (workspace) {

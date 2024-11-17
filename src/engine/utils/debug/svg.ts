@@ -34,6 +34,7 @@ type DrawDebugRectParams = {
   color?: string;
   strokeColor?: string;
   strokeWidth?: string;
+  id: string;
 };
 
 // デバッグ用の矩形描画関数
@@ -43,6 +44,7 @@ export function drawDebugRect({
   color = 'blue',
   strokeColor = 'black',
   strokeWidth = '2',
+  id,
 }: DrawDebugRectParams) {
   if (!parent) {
     console.error('親要素が指定されていません');
@@ -50,6 +52,7 @@ export function drawDebugRect({
   }
 
   const svgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+  svgRect.setAttribute('id', id);
   svgRect.setAttribute('x', rect.x.toString());
   svgRect.setAttribute('y', rect.y.toString());
   svgRect.setAttribute('width', rect.w.toString());

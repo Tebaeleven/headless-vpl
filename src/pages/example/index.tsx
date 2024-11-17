@@ -29,8 +29,9 @@ function page() {
   return (
     <>
       <main className="h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-sky-400 to-blue-800">
-        <div className="p-4 flex gap-4 h-full w-full">
+        <div className="p-4 grid grid-cols-2 grid-rows-2 gap-4 h-full w-full ">
           <StageNormal />
+          <StageCanvas />
           <StageHeadless />
         </div>
       </main>
@@ -39,6 +40,14 @@ function page() {
 }
 
 export default page;
+
+function StageCanvas() {
+  return (
+    <Card className="w-full h-full">
+      <canvas id="workspace_canvas" width="500" height="500"></canvas>{' '}
+    </Card>
+  );
+}
 
 function StageNormal() {
   return (

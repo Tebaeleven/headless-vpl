@@ -9,10 +9,12 @@ export class Rect {
   position: Position = { x: 0, y: 0 };
   w: number;
   h: number;
+  uuid: string;
 
   constructor({ w, h }: Params) {
     this.w = w;
     this.h = h;
+    this.uuid = crypto.randomUUID();
   }
 
   public getRect() {

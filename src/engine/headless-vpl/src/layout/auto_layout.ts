@@ -1,4 +1,5 @@
-import { Rect, Position } from './rect';
+import { Position } from '../type';
+import { Rect } from './rect';
 
 type Params = {
   width: number;
@@ -37,7 +38,6 @@ export class AutoLayout {
     const totalWidth =
       this.elements.reduce((sum, element) => sum + element.w, 0) +
       padding * (this.elements.length - 1);
-    console.log(totalWidth);
 
     // 左端の開始位置を計算（中央揃え）
     // let currentX = this.width / 2 - totalWidth / 2;
